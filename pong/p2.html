@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Learning JS from Pong - Uriah Sanders</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <link href="main.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="favicon.png" />
+</head>
+<body class="impress-not-supported">
+<div class="step slide">
+        <a class="link"href="guide.html">Back to guide.</a><hr>
+        <q>Part 2: Saving player's age from birth year, and setting an age limit.</q>
+        <br>
+        By the end of this part, you will understand code commenting, variables and data types, concatenation, built-in input and output, how to do math in JS, and conditionals.
+    </div>
+    <div class="step slide">
+        <q>Variables: Age and birth year</q>
+        <br>
+        Okay, here's where things get exciting: Lets start writing some actual code now. If you remember "Setting up" from part 0, you should have a ".html" file opened up in your text editor or IDE. You should also have this file opened up in a web browser. Within this file, you should have "&lt;script&gt; &lt;script/&gt;" written inside, on two separate lines. Like this:
+<pre class="prettyprint">
+    &lt;script&gt; 
+
+    &lt;/script&gt;
+</pre>
+        Remember how in part two we talked about "built in steps" that JS takes care of for you? Let me introduce you to one now. It's called "alert", and writes out whatever text you give to it. Try this (after you write it save the file and refresh the web page):
+<pre class="prettyprint">
+    &lt;script&gt; 
+        alert("Hello!");
+    &lt;/script&gt;
+</pre>
+        Each of these built in steps are called "functions", by the way, and you can make them yourself as well. But more on that later. For right now, I want you to end each line of code that you write with a semi-colon (;). This is how JS knows you're ready to move on to the next thing. Also, I will no longer be writing the script tags in my examples, because they are not relevant to javascript.
+        <br><br>
+        One last built in function that I'd like to present to you is called "prompt". It takes some input from the user while asking a question. Try this:
+<pre class="prettyprint">
+    prompt("What is your name?");
+</pre>
+        Right now you can't do anything with the response, but I'll get to that soon. What I really want to show you are variables. Remember how in math class you used variables like "x" to store a certain number? In javascript, that value can be anything: A number, a character, some text (we call a sequence of characters in quotes "strings"), or even another variable. Variables are useful because they allow us store information. To create a new variable, you use the "var" keyword:
+<pre class="prettyprint">
+    var myValue = "Some value";
+    alert(myValue);
+</pre>      
+        A variable can have any name. In this case, "myValue" stores the string "Some value". So, when we alert(myValue) we see the stored string. It's important to note that JS uses quotes to distinguish strings for variable names and keywords. <br><br>
+        With this information, we can now make the prompt function useful. If you try assigning a variable to a prompt, you will get back the user's response. Since we're working on our pong project, we're going to need the players age to determine whether they are old enough to play. Lets ask the user for their year of birth and assign that to a variable.
+<pre class="prettyprint">
+    var birthYear = prompt("What is your year of birth?");
+    alert("Year of birth:" + birthYear);
+</pre>
+        Now we see something even more interesting going on. We can add together information to form a message! You can also do simple math with JS in the same way. Lets calculate the user's age from their birth year. At the time of writing this tutorial, it is 2014, so:
+<pre class="prettyprint">
+    //remember "notes" from part 1? Those are called comments and they work here too!
+    var birthYear = prompt("What is your year of birth?");
+    var age = 2014 - birthYear;
+    alert("Your age is:" + age);
+    //on your own, try using: +, -, *, and / with different data types
+</pre>   
+        We have successfully stored the age of the user!   
+    </div>
+    <div class="step slide">
+        <q>Is the player old enough?</q>
+        <br>
+        Now that we've stored the age of our player, lets see if we can prevent players who are too young from playing our game. The age we will exclude here in 6 and younger. (If you're 6 years old and reading this, you're doing great!)<br>
+        Lets store a value in a variable that will let us know whether they are old enough, and tell them whether they are. Lets write some pseudo code to plan out our thoughts:
+<pre class="prettyprint">
+    if the age of the player is less than or equal to 6:
+        playerIsOldEnough = false
+    else:
+        playerIsOldEnough = true
+    alert(playerIsOldEnough)
+</pre>
+        The real code to do this looks extremely similar. But in order for you to understand how we do it, I need introduce you to another type of data: booleans. That's either true, or false. That's different from "true", "false" with quotes. This difference is important because our "if" keyword in JS will only work with booleans. If one thing is true do that, else do this. To create true and false values, we can compare things in a very familiar way:
+<pre class="prettyprint">
+    alert(6 < 8); //true
+    alert(2 < 0); //false
+    alert(4 === 4); //true. When we checking for equality in JS we use 3 equal signs.
+    alert(7 !== 24); //true. This is how we ask if values are NOT equal
+    //we can do the same things with strings:
+    alert("test" === "test"); //true
+    alert("hi" === "bye"); //false
+    //and booleans:
+    alert(true === false); //false
+    alert(true === true); //true
+    alert(false === false); //true
+    //on your own, try using: <=, >=, and > with different data types
+</pre>
+        In our case, we want to see if the player's age is less than or equal to 6. To accomplish this, we will need to use both comparisons, and our if, else statements. These statements look like this:
+<pre class="prettyprint">
+    var birthYear = prompt("What is your year of birth?");
+    var age = 2014 - birthYear;
+    var playerIsOldEnough; //dont give it a value, just let JS know we want to use this name
+    if(age <= 6){ //will only run if condition is true
+        playerIsOldEnough = false; //we only need to use "var" the first time we make a variable
+    }
+    else{ //if above condition was false this will happen
+        playerIsOldEnough = true;
+    }
+    //on your own, try testing a few more conditions
+</pre>
+        Now, lets add to the above code. We need to tell the player whether they are old enough or not. Lets use both our new variable and an if-else statement to do this:
+<pre class="prettyprint">
+    if(playerIsOldEnough){
+        alert("You are old enough to play!");
+    }else{
+        alert("Sorry, you cant play this game. Wait a few years.");
+    }
+    //we will use our variable later to make sure youngsters cant play
+</pre>  
+    </div>
+    <div class="step slide">
+        <q>That's it for Part 2!</q>
+        <br>
+        Here's the link to part 3 of the tutorial: <a href="p3.html">LINK</a>
+    </div>
+    <br><br><br><br><br><br>
+<script src="pong.js"></script>
+</body>
+</html>

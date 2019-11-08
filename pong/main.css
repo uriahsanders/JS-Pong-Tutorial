@@ -1,0 +1,56 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: 1em "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    vertical-align: baseline;
+}
+blockquote, q {
+    quotes: none;
+}
+a {
+    color: #000;
+    text-decoration: none;
+    padding: 0 0.1em;
+    border-radius: 0.2em;
+    -webkit-transition: 0.5s;
+    -moz-transition:    0.5s;
+    -ms-transition:     0.5s;
+    -o-transition:      0.5s;
+    transition:         0.5s;
+    opacity: 0.6;
+}
+a:hover{
+    opacity: 1;
+}
+.step {
+    position: relative;
+    width: 900px;
+    padding: 10px;
+    margin: 20px auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    -ms-box-sizing:     border-box;
+    -o-box-sizing:      border-box;
+    box-sizing:         border-box;
+    line-height: 1.5;
+}
+.slide {
+    display: block;
+    color: #000;
+    line-height: 30px;
+}
+.slide q {
+    display: block;
+    font-size: 2em;
+    line-height: 50px;
+}
+.slide q strong {
+    white-space: nowrap;
+}
+pre{
+    font-size: 15px;
+}
+pre.prettyprint{
+    border: 0px solid black;
+}

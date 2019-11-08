@@ -1,0 +1,44 @@
+<div id="main"style="text-align:center">
+	
+</div>
+<script type="text/javascript">
+	(function(){
+		//first entry of each sample
+		var bacteria = [ //7 cols after filling
+			[16],
+			[97],
+			[112],
+			[7],
+			[143]
+		];
+		//common ratio of each sample
+		var ratios = [4, 3, 7, 9, 2];
+		//build full sample information
+		for(var i = 0; i < bacteria.length; ++i){
+			for(var j = 1; j < 7; ++j){
+				bacteria[i][j] = bacteria[i][j - 1] * ratios[i];
+			}
+		}
+		var a = 0, r = 0;
+		//loop through each bateria sample and perform each step on it
+		for(var i = 0; i < bacteria.length; ++i){
+			a = bacteria[i][0];
+			r = ratios[i];
+			var str = '<h2>Bacteria Sample ' + (i + 1) + ':</h2>';
+			str += 'Step 1: Common ratio: ' + ratios[i] + '<br>';
+			str += 'Step 2: Equation: a of n = ' + a + ' X ' + r + ' ^ (n - 1)<br>';
+			str += 'Step 3: Number of cultures at 8th hour: ' + getTerm(a, 8, r) + '<br>';
+			str += 'Step 3: Number of cultures at 10th hour: ' + getTerm(a, 10, r) + '<br>';
+			str += 'Step 3: Number of cultures at 12th hour: ' + getTerm(a, 12, r) + '<br>';
+			str += 'Step 4: Total number of bacterial cultures after 24 hours: ' + ((a * (1 - Math.pow(r, 24))) / (1 - r));
+			write(str);
+		}
+	})();
+	//funcs
+	function getTerm(a, n, r){
+		return a * Math.pow(r, n - 1);
+	}
+	function write(stuff){
+		document.getElementById('main').innerHTML += stuff + '<hr>';
+	}
+</script>

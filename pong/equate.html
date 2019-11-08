@@ -1,0 +1,27 @@
+<div id="main">
+	
+</div>
+<script type="text/javascript">
+	//equation = P(t) = P(0)e^(kt)
+	//equation for doubling time: doubleP/initP = e^(kt) | = ln(doubleP/initP)/k = t
+	var finalP; //final amount
+	var initP = prompt('How much would you like to invest?'); //intial amount in dollars
+	var e = Math.E; //mathematical constant
+	var k = [0.005, 0.01, 0.015]; //rate of growth percent => decimal
+	var t = [1, 5, 10]; //time in years
+	var doubleP = initP * 2; //amount to find doubling time with
+	function write(what, c){
+		document.getElementById("main").innerHTML += "<"+c+"r />" + what;
+	}
+	function calculate(){
+		for(var i = 0; i < k.length; ++i){
+			write('k = ' + k[i] + ', Doubling time: ' + (Math.log(doubleP / initP) / k[i]), 'b')
+			for(var j = 0; j < t.length; ++j){
+				write("Day " + t[j] + ": $" + initP * Math.pow(Math.E, k[i] * t[j]) + ", Equation: " + initP + " X e^" + (k[i] * t[j]), 'b');
+			}
+			write('', 'h');
+		}
+	}
+	write('<h1>Amount you are investing: $' + initP + '<h1>', 'b');
+	calculate();
+</script>

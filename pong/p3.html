@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Learning JS from Pong - Uriah Sanders</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <link href="main.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="favicon.png" />
+</head>
+<body class="impress-not-supported">
+<div class="step slide">
+        <a class="link"href="guide.html">Back to guide.</a><hr>
+        <q>Part 3: Canvas, start and end screens</q>
+        <br>
+        By the end of this part, you will understand canvas technology, functions, objects, and event handling. You should be hella excited about this one, 'cause we're gonna start on the actual game! Also, pseudo code is going to become a lot more useful.
+    </div>
+    <div class="step slide">
+        <q>Objects</q>
+        <br>
+        
+    </div>
+    <div class="step slide">
+        <q>Functions</q>
+        <br>
+        I want you to look back at parts 0 and 1. This little section is all about knowing what we need to do and how we're going to do it. Remember how we talked about steps, each being made up of smaller steps? And how those steps can be called functions? It's time to start making our own. These things will help us keep our code organized, and will make it easier for us to write pseudo code representing what we want to do.
+        <br><br>
+        Our game essentially has three major steps:
+<pre class="prettyprint">
+    Step 1: Show home screen
+    Step 2: When player clicks screen start playing game.
+    Step 3: When player loses show end screen.
+</pre>
+        Of course, there are a few important things here and there outside of those steps, but we're thinking big right now. The other important thing is WHEN each up these steps will run. Well, we show the home screen automatically. We show the game screen when they click on it. And we show the end screen when they lose. Okay. We'll get back to that in a sec, but first a quick detour explaining functions a bit better.
+        <br><br>
+        Basically, you store a function inside of a variable. Using certain notation, you can make that function "run" at any time you'd like. To create a function in JS:
+<pre class="prettyprint">
+    //this is a function named "sayHello"
+    var sayHello = function(){
+        alert("Hello!");
+    };
+    sayHello(); //will run everything inside: alerts "Hello!"
+</pre>
+        Inside of a function, you can write any code you'd like. Don't worry about what those parenthesis are for yet. We'll get to it.
+        <br><br>
+        So, lets create our functions to represent our pseudo code. We'll worry about what goes inside of them later, so they'll just be empty.
+<pre class="prettyprint">
+    var beginScreen = function(){
+
+    };
+    var startPlaying = function(){
+
+    };
+    var endScreen = function(){
+
+    };
+    beginScreen(); //we run this automatically, remember?
+</pre>
+        Now, lets learn about what we should put in our "beginScreen" function to write the text "Click to start playing". We're going to have to learn a few things first, though.               
+    </div>
+    <div class="step slide">
+        <q>A Little Bit of DOM</q>
+        <br>
+        Get ready for a MASSIVE detour! I want to explain some very important things to you. So far, we've been using alert and prompt to show things to our user. You've probably been wondering how to do input and output in a much nicer way. Nicer ways exist, trust me. The only issue is, this is a beginner tutorial and I'm trying to cover as little as possible at once.
+        <br><br>
+        However, right now we need to start displaying text on the screen. Unfortunately, to do this we have to move a little outside of programming, and into the realm of design and webpage structuring. A little bit. Luckily there are some nice ways to have JS interact with those things. But youll have no idea what's going on unless I at least give you a brief explanation.
+        <br><br>
+        The file you're working on right now ends in ".html" because it is an HTML file. That's HyperTextMarkupLanguage. A bunch of tags that you write to give structure to a webpage, tell the browser where everything is, for the most part. If we want input boxes, nice user interfaces, and text showing up on the screen, thats how we do it. Through HTML. A quick search will give you more information. But this isn't an HTML tutorial, this is a JS tutorial. But, unfortunately, I'm going to need you to write one line of HTML. After that, we can use some of those built in functions JS has to interact with it. Add this to your file, right above the script tags:
+<pre class="prettyprint">
+    &lt;canvas id="game"&gt;&lt;/canvas&gt;
+</pre>
+        That, my friend, is called canvas. A nice html element that we can use JS to interact with. It lets us draw things, animate things, write things. It is where our game will exist. the "id" part lets JS know how to find our canvas.
+    </div>
+    <div class="step slide">
+        <q>Interacting with Canvas</q>
+        <br>
+        To start interacting with canvas, we need to use some default functions to first find the canvas, and then let it know we intend to do stuff to it. We will also need to give the canvas a background color (black), so you can see it, and give it a height and width on our page. All the functions and properties you see are built in. Don't worry about them too much for now. 
+<pre class="prettyprint">
+    var canvas = document.getElementById('game'); //find our canvas
+    canvas.style.background = "black"; //background to black
+    //we'll need these variables later as well
+    var height = 500; //500 pixels
+    var width = 900;
+    //change height and width
+    canvas.height = height; //set height property to our variable
+    canvas.width = width;
+    //variable we use to control canvas:
+    var ctx = canvas.getContext('2d');
+</pre>     
+        You should now see a black box on your page!
+    </div>
+    <div class="step slide">
+        <q>That's it for Part 3!</q>
+        <br>
+        Here's the link to part 4 of the tutorial: <a href="p4.html">LINK</a>
+    </div>
+    <br><br><br><br><br><br>
+<script src="pong.js"></script>
+</body>
+</html>

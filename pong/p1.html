@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Learning JS from Pong - Uriah Sanders</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <link href="main.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="favicon.png" />
+</head>
+<body class="impress-not-supported">
+<div class="step slide">
+        <a class="link"href="guide.html">Back to guide.</a><hr>
+        <q>Part 1: Planning out your project step by step.</q>
+        <br>
+        By the end of this part, you will understand how to outline your ideas in a logical, step by step way that computers can understand, and how programmers approach problems and turn an idea into an algorithm.
+    </div>
+    <div class="step slide">
+        <q>Algorithms and Pseudo Code</q>
+        <br>
+        An algorithm is a well defined, step-by-step process that your computer follows. Because computers aren't very smart, you have to tell them EVERY SINGLE THING that they have to do. A bunch of very specific steps, which are each made up of smaller steps themselves. At some point, your computer has some built in things that handle the smallest steps for you.<br><br>
+        When programmers approach a problem, the first thing we have to do is think about each thing we have to do to solve the problem. And for each of these things, we have to tell the computer exactly how we're going to do it. For example, if we're going to read a book, we need to:<br><br>
+        <pre class="prettyprint">
+Step 1: Find a good book!
+Step 2: Read each page.
+Step 3: Close the book.
+        </pre>
+        Thats cool and all, but HOW do you do each of those things? Lets see if we can get more specific. Also, sometimes it's useful to explain what we're doing as we write, so other programmers can understand. These notes will start with "//" and are not a part of the code.<br><br>
+        <pre class="prettyprint">
+//assume that the smallest steps are built in
+Step 1: Find a good book!
+    //we will keep checking for an interesting title until there are no more books
+    //or until we find an interesting one
+    while there are still books to look at
+        -if the book has an interesting title, go to step 2
+ Step 2: Read each page.
+     while there are still more pages to read
+        -if we are finished reading the current page, go to the next one
+        -else, go to Step 3
+Step 3: Close the book.
+    //This step is simple enough to have one line :D
+    -Run a built in step to close the book.
+        </pre>
+        You might want to let that sink in a bit. I just expanded on each of our steps. Notice these words: while, if, else. These are called keywords. You can think of them as more specialized built in "steps". They do exactly what you'd think they'd do. When writing in javascript, you can use these very same words!
+        <br><br>
+        Honestly, that is exactly how a real program would look. The only difference is, whatever language you're writing it in will have some convenient little ways to say the same thing in an easier, more logical way. Since what we wrote was just an outline, and couldn't really run on our computer, this is called pseudo code. It just leaves a few pieces of logic out, and looks like normal English. Now that we understand pseudo code, we will be using it throughout the rest of this tutorial to pan out our thoughts.<br><br>
+    </div>
+    <div class="step slide">
+        <q>That's it for Part 1!</q>
+        <br>
+        Here's the link to part 2 of the tutorial: <a href="p2.html">LINK</a>
+    </div>
+    <br><br><br><br><br><br>
+<script src="pong.js"></script>
+</body>
+</html>

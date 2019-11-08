@@ -1,0 +1,245 @@
+<!-- This is what comments look like in HTML! -->
+<!-- Tell the browser that we intend to use html5 technology like canvas -->
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>Pong</title>
+</head>
+<body>
+	<h1>Pong</h1>
+	<!-- Add canvas element and give it an id so javascript can find it -->
+	<canvas id="game"></canvas>
+</body>
+<!-- Code for pong game -->
+<script type="text/javascript">
+	//a function enclosed like this means that it runs automatically
+	//it's called an anonymous or self invoking function
+	(function(){
+		//get the canvas element from the DOM
+		var canvas = document.getElementById('game');
+		//make the background of the canvas black
+		canvas.style.background = 'black';
+		//set height and width of canvas in pixels
+		canvas.height = 500;
+		canvas.width = 900;
+		//save the height and width of the canvas in variables for later use
+		var height = canvas.height;
+		var width = canvas.width;
+		//this is the variable we use to manipulate the canvas
+		var ctx = canvas.getContext('2d');
+		//set a font style for the entire canvas
+		ctx.font = '25px Sans';
+		//this array will store all of our previous scores so that
+		//we can later calculate high score
+		var scores = [0];
+		//initialize our current score to 0
+		var score = 0;
+		//this variable will hold our animation loop,
+		//we will use it to stop and restart our animation
+		//each time the loop runs we will update all of our data
+		//and then redraw everything in their new positions
+		var animLoop;
+		//this is our object for the ball
+		var ball = {
+			//remember, on canvas top left is (0, 0)
+			//so we make x and y one to make sure they dont start at the very edge
+			//or else our collision handler would catch it too soon
+			x: 1,
+			y: 1,
+			//set the width, height, and radius of our ball
+			width: 10,
+			height: 10,
+			radius: 10,
+			//x-velocity and y-velocity, how much does the ball move in each direction everytime
+			//our loop runs?
+			vx: 5, //5 looks like a decent speed
+			vy: 5,
+			//everytime our loop runs, we will add 5 to our current x and y positions,
+			//causing the ball to move. Each time the loop runs we will clear all
+			//old images of the canvas so we only see motion
+			update: function() {
+				this.x += this.vx;
+				this.y += this.vy;
+			},
+			//after updating, we now need to tell the canvas to draw in the required
+			//locations. So use the arc method to draw a ball
+			//using our current x and y positions, color, and radius data
+			draw: function() {
+				ctx.fillStyle = 'red';
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+				ctx.fill();
+			}
+		};
+		//here's our object for the paddle
+		var paddle = {
+			//we want the paddle to be at the center of the screen, so
+			//width / 2 should accomplish that. however, we also need to compensate
+			//for the width of the paddle (or else only the left corner would be at the center), 
+			//which I just decided would be width / 5.
+			//so move the paddle back by half of its width to compensate
+			x: width / 2 - (width / 5)/2,
+			//remmeber, in canvas coordinates, top left is (0, 0), 
+			//so the bottom will be the height of the canvas.
+			//after that, we need to raise up the paddle by its height,
+			//so subtract 10
+			y: height - 10,
+			//the player will control our x-velocity, so initialize it to 0
+			//the paddle will not move up and down so no y-velocity is required
+			vx: 0,
+			height: 10,
+			//make sure the width of the screen is a fact or the paddle width
+			//so it always scales even if we increase canvas size
+			width: width / 5,
+			//same as ith update method of ball
+			update: function() {
+				this.x += this.vx;
+			},
+			//same as draw method of ball
+			draw: function() {
+				ctx.fillStyle = 'red';
+				ctx.rect(this.x, this.y, this.width, this.height);
+				ctx.fill();
+			}
+		};
+		//to get the heigh score...
+		var getHighScore = function() {
+			var highScore = 0; //have a variable to store our high score
+			//loop through of of our stored scores
+			for (var i = 0; i < scores.length; ++i) {
+				//if this score is bigger than 0 and alse more than the last score we looked at (i - 1)
+				//then set the high score to this score
+				if (i > 0 && scores[i] > scores[i - 1]) {
+					highScore = scores[i];
+				}
+			}
+			//give back the high score
+			return highScore;
+		}
+		//when this function runs our canvas will show "Click to play"
+		var beginScreen = function() {
+			ctx.clearRect(0, 0, width, height);
+			ctx.fillStyle = 'white';
+			ctx.fillText("Click to Play", canvas.width / 2.5, canvas.height / 2);
+		};
+		//stop the animation with clearInterval(), clear the screen, and then write "Game Over" With current hight score
+		//also store our current score into our array of scores, so we can see if its the new high one with
+		//getHighScore()
+		var endScreen = function() {
+			clearInterval(animLoop);
+			ctx.clearRect(0, 0, width, height);
+			ctx.fillStyle = 'white';
+			scores.push(score);
+			ctx.fillText("Game Over! Current high score: " + getHighScore(), canvas.width / 4, canvas.height / 2);
+		};
+		//what to do when objects collide (game logic here)
+		var handleCollisions = function() {
+			//this is called a rectangular collision algorithm
+			//returns true if objects
+			//collide within the bounds of their width and height
+			//and false otherwise. You may have to look at it for a bit to understand how this is calculated
+			//but its quite simple. Basically, seeing if the x and y positions are the same,
+			//while compensating for the width and height of both objects
+			var collides = function(a, b) {
+				//Just to clarify:
+				//a is the first object and a.x retrieves the "x" porperty of that object
+				return a.x < b.x + b.width &&
+					a.x + a.width > b.x &&
+					a.y < b.y + b.height &&
+					a.y + a.height > b.y;
+			}
+			//if the ball and paddle collide
+			if (collides(ball, paddle)) {
+				//add one to the score
+				++score;
+			}
+			//we dont need else ifs because these can all happen at once
+			//if the ball and paddle collide OR the ball is at the top of the screen
+			if (collides(ball, paddle) || ball.y <= 0) {
+				//reverse the balls trajectory. So when we hit the paddle go the opposite way,
+				//and when we hit the roof go the opposite way. In the Y direction of course
+				ball.vy = -ball.vy;
+			}
+			//if the ball is outside the left or right side of the screen
+			//remember, we have to use >= and <= and not just = because we are adding more than one to the 
+			//positions each time. So sometimes it might be a bit past a boundary and we still want to catch that
+			if (ball.x <= 0 || ball.x >= width) {
+				//reverse the balls X trajectory so it doesnt cross boundary
+				ball.vx = -ball.vx;
+			}
+			//if the ball hits the ground, run the endScreen() function....
+			//YOU LOSE!!!
+			if (ball.y >= height) {
+				endScreen();
+			}
+		};
+		//call the update and draw functions on both our ball and paddle
+		var updateAndDraw = function() {
+			//update our data
+			ball.update();
+			paddle.update();
+			//clear the canvas so we only see new drawings
+			ctx.clearRect(0, 0, width, height);
+			//draw objects with new positions
+			ball.draw();
+			paddle.draw();
+			//now update our score counter with the current score
+			ctx.fillStyle = 'white';
+			ctx.fillText("Score: " + score, 10, 25);
+			//run handle collisions function each time
+			//to make sure our game knows when stuff hits
+			handleCollisions();
+		};
+		//whenever we start playing the game again, we need to reset all data to its defaults
+		//and make sure our current score for this game is once again initialized to 0
+		//and then we start our animation again with setInterval()
+		var startPlaying = function() {
+			ball.x = 1;
+			ball.y = 1;
+			paddle.y = height - 10;
+			paddle.x = width / 2 - (width / 5)/2;
+			score = 0;
+			//1000/60 means 60 FPS
+			//every time our loop runs call the function "updateAndDraw"
+			animLoop = setInterval(updateAndDraw, 1000 / 60);
+		};
+		//okay, document.addEventLister is a built in thing in JS
+		//where you listen to key and mouse events on the document
+		//so here, on every key down...
+		document.addEventListener('keydown', function(e) {
+			var key = e.keyCode; //what key is being pressed?
+			//you have to google or memorize certain key codes.
+			//they are easy to find and tell the computer which key is being pressed
+			//these numbers mean left or right
+			//change move the paddles based on player keys
+			//remember negative reverses direction
+			if (key === 37) paddle.vx = -5;
+			else if (key === 39) paddle.vx = 5;
+		});
+		//everytime a key is released...
+		document.addEventListener('keyup', function(e) {
+			var key = e.keyCode;
+			//if the key being released is the left or right one
+			//stop the paddle by making the velocity 0
+			if (key === 37 || key === 39) paddle.vx = 0;
+		});
+		//now, instead of listening for events on the document
+		//lets listen for events that happen to the canvas element
+		//the canvas variable was defined at the beginning
+		//whenever the canvas is clicked....
+		canvas.addEventListener('click', function(e) {
+			startPlaying(); //run the startPlaying() function to run the game
+		});
+		//immediately show the begin screen by calling the function on page load
+		beginScreen();
+	})();
+</script>
+</html>
+<!-- 
+	And that's it. That's how you make pong in JS. The concepts are actually pretty simple,
+	and just build on stuff you already understand. Try playing aroud with some values to see what happens.
+	You could try fixing some bugs, adding a paddle to the top as well, adding more balls,
+	making the player be able to get certain powers, etc.
+	This isn't neccesarily the best way to do it, or how I would do it, but I just kept it simple :)
+	Have fun!
+-->
